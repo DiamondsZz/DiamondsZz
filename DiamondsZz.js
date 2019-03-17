@@ -1,7 +1,11 @@
 'use strict';
 
+//
+// 试着封装一些常用工具，水平有限！！！
 (function (window, document) {
-    function DiamondsZz() {}
+    function DiamondsZz() {
+    }
+
     DiamondsZz.prototype = {
         constructor: DiamondsZz,
 
@@ -47,15 +51,28 @@
             }
         },
 
-        // 获取嵌入或外联css的样式值(内联样式可以使用obj.style)
+        // 获取css的样式值(obj.style只可以获取内联样式)
         getCSSAttrValue: function (obj, attr) {
             if (obj.currentStyle) { // IE 和 opera
                 return obj.currentStyle[attr];
             } else {
-                return window.getComputedStyle(obj, null)[attr];
+                return window.getComputedStyle(obj)[attr];
             }
         },
 
+        //深拷贝（利用递归实现）
+        deepCopy: function (fromObj, toObj) {
+            for (var key in fromObj) {
+                var fromValue = fromObj[key];
+                if (typeof fromValue !== 'object')  //判断是否为复杂的数据类型
+                    toObj[key] = fromObj[key];
+                else {
+                    var _Obj = new fromValue.constructor;
+                    deepCopy(fromValue, _Obj);
+                    toObj[key] = _Obj;
+                }
+            }
+        },
 
     };
     window.DiamondsZz = new DiamondsZz();
