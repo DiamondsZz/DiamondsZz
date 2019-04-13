@@ -68,11 +68,26 @@
                     toObj[key] = fromObj[key];
                 else {
                     var _Obj = new fromValue.constructor;
-                    deepCopy(fromValue, _Obj);
+                    this.deepCopy(fromValue, _Obj);
                     toObj[key] = _Obj;
                 }
             }
         },
+		//判断两个对象的值是否相等
+		isObjEqual: function (obj1, obj2) {
+			let keys = Object.keys(obj1);
+			for (let key in obj1) {
+				if (typeof obj1[key] !== 'object') {
+					if (obj1[key] === obj2[key]) {
+						if (key === keys[keys.length - 1]) return true;
+						else continue
+					}
+					return false
+				} else {
+					return this.isObjEqual(obj1[key], obj2[key]);
+				}
+			}
+		}
 
     };
     window.DiamondsZz = new DiamondsZz();
